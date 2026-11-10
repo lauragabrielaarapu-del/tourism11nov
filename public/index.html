@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoyageAI — Intelligent Global Tourism & Travel Concierge</title>
+  <meta name="description" content="AI-powered luxury tourism concierge and itinerary planner powered by Azure OpenAI. Discover destinations, custom travel plans, local culture, and secret spots.">
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Markdown Renderer & Sanitizer -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- App Container -->
+  <div class="app-layout">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-compass"></i>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">VoyageAI</span>
+            <span class="brand-sub">Tourism Concierge</span>
+          </div>
+        </div>
+        <button class="icon-btn mobile-close-btn" id="closeSidebarBtn" title="Close sidebar">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Action Button -->
+      <div class="sidebar-action">
+        <button class="btn btn-primary btn-block" id="openTripModalBtn">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          <span>Craft New Itinerary</span>
+        </button>
+      </div>
+
+      <!-- Travel Persona Selector -->
+      <div class="sidebar-section">
+        <label class="section-label">Traveler Persona</label>
+        <div class="persona-grid">
+          <button class="persona-chip active" data-persona="general">
+            <i class="fa-solid fa-globe"></i>
+            <span>All-Rounder</span>
+          </button>
+          <button class="persona-chip" data-persona="luxury">
+            <i class="fa-solid fa-crown"></i>
+            <span>Luxury VIP</span>
+          </button>
+          <button class="persona-chip" data-persona="budget">
+            <i class="fa-solid fa-backpack"></i>
+            <span>Backpacker</span>
+          </button>
+          <button class="persona-chip" data-persona="foodie">
+            <i class="fa-solid fa-utensils"></i>
+            <span>Food & Wine</span>
+          </button>
+          <button class="persona-chip" data-persona="family">
+            <i class="fa-solid fa-people-roof"></i>
+            <span>Family Fun</span>
+          </button>
+          <button class="persona-chip" data-persona="adventure">
+            <i class="fa-solid fa-mountain-sun"></i>
+            <span>Adventure</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Exploration Tools -->
+      <div class="sidebar-section">
+        <label class="section-label">Quick Guides</label>
+        <div class="quick-nav-list">
+          <button class="quick-nav-item" data-prompt="What are the top 5 secret and off-the-beaten-path hidden gems in Dubai?">
+            <i class="fa-solid fa-gem"></i>
+            <span>Dubai Hidden Gems</span>
+          </button>
+          <button class="quick-nav-item" data-prompt="Design an ultimate 48-hour culinary food tour in Tokyo with must-eat ramen, sushi, and street food.">
+            <i class="fa-solid fa-bowl-food"></i>
+            <span>Tokyo Foodie Trail</span>
+          </button>
+          <button class="quick-nav-item" data-prompt="Plan a romantic 3-day Paris itinerary with scenic sunset spots, cozy cafes, and rooftop dinners.">
+            <i class="fa-solid fa-heart"></i>
+            <span>Romantic Paris Guide</span>
+          </button>
+          <button class="quick-nav-item" data-prompt="Provide a practical first-timer guide for visiting Rome: best museum passes, avoiding scams, and transit tips.">
+            <i class="fa-solid fa-landmark"></i>
+            <span>Rome First-Timer Tips</span>
+          </button>
+          <button class="quick-nav-item" data-prompt="What is the best 5-day tropical escape itinerary in Bali covering waterfalls, beach clubs, and cultural temples?">
+            <i class="fa-solid fa-umbrella-beach"></i>
+            <span>Bali Island Getaway</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Trending Destinations -->
+      <div class="sidebar-section">
+        <label class="section-label">Trending Destinations</label>
+        <div class="destinations-scroll">
+          <div class="dest-badge" data-dest="Dubai, UAE">
+            <span class="dest-emoji">🇦🇪</span>
+            <span class="dest-name">Dubai</span>
+          </div>
+          <div class="dest-badge" data-dest="Tokyo, Japan">
+            <span class="dest-emoji">🇯🇵</span>
+            <span class="dest-name">Tokyo</span>
+          </div>
+          <div class="dest-badge" data-dest="Paris, France">
+            <span class="dest-emoji">🇫🇷</span>
+            <span class="dest-name">Paris</span>
+          </div>
+          <div class="dest-badge" data-dest="Rome, Italy">
+            <span class="dest-emoji">🇮🇹</span>
+            <span class="dest-name">Rome</span>
+          </div>
+          <div class="dest-badge" data-dest="New York City, USA">
+            <span class="dest-emoji">🇺🇸</span>
+            <span class="dest-name">New York</span>
+          </div>
+          <div class="dest-badge" data-dest="Bali, Indonesia">
+            <span class="dest-emoji">🇮🇩</span>
+            <span class="dest-name">Bali</span>
+          </div>
+          <div class="dest-badge" data-dest="Santorini, Greece">
+            <span class="dest-emoji">🇬🇷</span>
+            <span class="dest-name">Santorini</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer / Status in Sidebar -->
+      <div class="sidebar-footer">
+        <div class="azure-badge">
+          <span class="pulse-dot"></span>
+          <div class="azure-info">
+            <span class="azure-model" id="azureModelDisplay">Azure gpt-5-mini</span>
+            <span class="azure-status">AI Engine Online</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Navbar -->
+      <header class="navbar">
+        <div class="nav-left">
+          <button class="icon-btn mobile-menu-btn" id="openSidebarBtn" title="Open Menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="nav-title-group">
+            <h1 class="nav-title">VoyageAI Concierge</h1>
+            <span class="persona-tag" id="currentPersonaTag">All-Rounder Mode</span>
+          </div>
+        </div>
+
+        <div class="nav-right">
+          <button class="nav-btn" id="voiceToggleBtn" title="Toggle Text-to-Speech Audio Readout">
+            <i class="fa-solid fa-volume-high"></i>
+            <span class="btn-text">Voice Audio</span>
+          </button>
+          <button class="nav-btn" id="modalOpenTrigger" title="Trip Planner Wizard">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <span class="btn-text">Trip Planner</span>
+          </button>
+          <button class="icon-btn" id="clearChatBtn" title="Clear Chat History">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Chat Container -->
+      <div class="chat-container" id="chatContainer">
+        
+        <!-- Welcome Hero Banner -->
+        <div class="welcome-hero" id="welcomeHero">
+          <div class="hero-badge">
+            <i class="fa-solid fa-sparkles"></i>
+            <span>Powered by Azure OpenAI Intelligence</span>
+          </div>
+          <h2 class="hero-title">Where would you like to travel next?</h2>
+          <p class="hero-subtitle">
+            I am your dedicated AI travel architect. Ask me anything from tailored multi-day itineraries and secret local spots to flight tips, budget estimates, and cultural etiquette.
+          </p>
+
+          <!-- Featured Destination Cards -->
+          <div class="featured-grid">
+            <div class="feature-card" data-prompt="Create an exhilarating 4-day itinerary in Dubai including desert glamping, Burj Khalifa lounge access, Old Dubai abra rides, and the Museum of the Future.">
+              <div class="card-icon"><i class="fa-solid fa-hotel"></i></div>
+              <div class="card-text">
+                <h4>Dubai Splendor</h4>
+                <p>4 Days of luxury skyline, desert safaris & heritage souks</p>
+              </div>
+              <span class="card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+
+            <div class="feature-card" data-prompt="Plan a 5-day cultural and culinary adventure in Tokyo exploring Shinjuku alleys, traditional Asakusa, futuristic TeamLab, and Tsukiji market.">
+              <div class="card-icon"><i class="fa-solid fa-torii-gate"></i></div>
+              <div class="card-text">
+                <h4>Tokyo Odyssey</h4>
+                <p>5 Days of Michelin ramen, neon alleys & historic shrines</p>
+              </div>
+              <span class="card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+
+            <div class="feature-card" data-prompt="Give me a comprehensive guide to visiting Rome on a moderate budget: skip-the-line tips for the Colosseum, authentic trattorias, and charming walking routes.">
+              <div class="card-icon"><i class="fa-solid fa-monument"></i></div>
+              <div class="card-text">
+                <h4>Eternal Rome</h4>
+                <p>Art, ancient history, espresso bars & sunset strolls</p>
+              </div>
+              <span class="card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+
+            <div class="feature-card" data-prompt="What is the ultimate 7-day tropical island itinerary in Bali featuring Ubud waterfalls, beachfront seafood in Jimbaran, and snorkeling in Nusa Penida?">
+              <div class="card-icon"><i class="fa-solid fa-water"></i></div>
+              <div class="card-text">
+                <h4>Bali Paradise</h4>
+                <p>Lush rice terraces, secret beaches & holistic wellness</p>
+              </div>
+              <span class="card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Message Feed -->
+        <div class="messages-feed" id="messagesFeed"></div>
+
+        <!-- Typing Indicator -->
+        <div class="typing-indicator" id="typingIndicator" style="display: none;">
+          <div class="bot-avatar">
+            <i class="fa-solid fa-compass"></i>
+          </div>
+          <div class="typing-bubble">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-label">VoyageAI is crafting your travel plan...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Chat Bar Area -->
+      <footer class="chat-footer">
+        <!-- Quick Prompt Chips Carousel -->
+        <div class="chips-container" id="chipsContainer">
+          <button class="chip" data-prompt="Create a 3-day weekend itinerary for Dubai">🏖️ 3-Day Dubai Trip</button>
+          <button class="chip" data-prompt="What should I pack for a 7-day trip to Japan in spring?">🌸 Japan Packing Guide</button>
+          <button class="chip" data-prompt="What are the top 5 must-try street foods in Bangkok?">🍜 Bangkok Street Foods</button>
+          <button class="chip" data-prompt="Give me a family-friendly 4-day travel plan for London">🎡 London with Kids</button>
+          <button class="chip" data-prompt="How can I travel Switzerland on a realistic budget?">🏔️ Swiss Alps on Budget</button>
+          <button class="chip" data-prompt="What are the essential travel visa and entry requirements for European Schengen countries?">🛂 Schengen Visa Essentials</button>
+        </div>
+
+        <!-- Input Box -->
+        <div class="input-card">
+          <button class="input-action-btn" id="micBtn" title="Speech to text (Voice typing)">
+            <i class="fa-solid fa-microphone"></i>
+          </button>
+          
+          <textarea 
+            id="chatInput" 
+            placeholder="Ask VoyageAI anything... e.g., 'Plan a 5-day luxury trip to Amalfi Coast with budget & dining' (Press Enter to send)" 
+            rows="1"
+          ></textarea>
+
+          <button class="send-btn" id="sendBtn" title="Send message">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </div>
+
+        <div class="input-hint">
+          <span>Tip: Shift + Enter for new line • Voice dictation & audio readout supported • Powered by Azure OpenAI</span>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Trip Planner Wizard Modal -->
+  <div class="modal-overlay" id="tripModal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+          <div>
+            <h3 class="modal-title">Custom Itinerary Architect</h3>
+            <p class="modal-desc">Configure your dream trip parameters for an instant bespoke guide</p>
+          </div>
+        </div>
+        <button class="icon-btn" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="wizardDestination">Destination City or Country</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-location-dot"></i>
+            <input type="text" id="wizardDestination" placeholder="e.g. Dubai, Kyoto, Paris, Barcelona, Iceland..." value="Dubai">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label class="form-label">Duration (Days): <span class="val-badge" id="daysValueDisplay">3 Days</span></label>
+            <input type="range" id="wizardDays" min="1" max="14" value="3" class="slider-input">
+          </div>
+
+          <div class="form-group half">
+            <label class="form-label">Budget Tier</label>
+            <select id="wizardBudget" class="select-input">
+              <option value="moderate" selected>Moderate / Comfortable</option>
+              <option value="budget">Backpacker / Budget-Friendly</option>
+              <option value="luxury">Luxury / 5-Star VIP</option>
+              <option value="ultra-luxury">Ultra-Luxury & Private</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Travel Pace & Style</label>
+          <div class="pill-selector">
+            <button class="pill-opt active" data-style="balanced">Balanced Highlights</button>
+            <button class="pill-opt" data-style="relaxed">Slow & Relaxed</button>
+            <button class="pill-opt" data-style="fast-paced">Action-Packed & Fast</button>
+            <button class="pill-opt" data-style="romantic">Romantic & Scenic</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Special Interests</label>
+          <div class="interest-checkboxes">
+            <label class="check-item"><input type="checkbox" value="Iconic Landmarks" checked> 🏛️ Landmarks</label>
+            <label class="check-item"><input type="checkbox" value="Authentic Food & Dining" checked> 🍲 Gastronomy</label>
+            <label class="check-item"><input type="checkbox" value="Hidden Gems & Secret Alleys" checked> 💎 Secret Gems</label>
+            <label class="check-item"><input type="checkbox" value="Art & Museums"> 🎨 Arts & Culture</label>
+            <label class="check-item"><input type="checkbox" value="Nature & Beaches"> 🏖️ Nature & Beach</label>
+            <label class="check-item"><input type="checkbox" value="Nightlife & Bars"> 🍸 Nightlife</label>
+            <label class="check-item"><input type="checkbox" value="Shopping & Souks"> 🛍️ Shopping</label>
+            <label class="check-item"><input type="checkbox" value="Photography Spots"> 📸 Photography</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancelModalBtn">Cancel</button>
+        <button class="btn btn-primary" id="generateWizardBtn">
+          <i class="fa-solid fa-sparkles"></i>
+          <span>Generate Bespoke Itinerary</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Main JavaScript Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
